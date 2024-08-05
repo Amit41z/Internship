@@ -7,7 +7,7 @@ function userMiddleware(req,res,next){
     try{
         if(token){
             const decoded = JWT.verify(token,'secret');
-            req.user = {personalNumber:decoded.id ,designation:decoded.designation };
+            req.user = {personalNumber:decoded.personalNumber ,designation:decoded.designation };
             next();
         }
     }catch(err){
