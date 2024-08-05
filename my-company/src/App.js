@@ -20,7 +20,7 @@ const App = () => {
     const decodedUser = jwtDecode(token);
     setIsAuthenticated(true);
     setUser(decodedUser);
-    localStorage.setItem('authToken', token); // Store the token
+    localStorage.setItem('Authorization', token); // Store the token
     navigate('/');
   };
 
@@ -36,7 +36,7 @@ const App = () => {
       <Header isAuthenticated={isAuthenticated} onLogout={handleLogout} />
       <div style={styles.bodyContainer}>
         <Routes>
-          <Route path="/" element={<Body isAuthenticated={isAuthenticated} />} />
+          <Route path="/" element={<Body />} />
           <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
           <Route path="/form" element={<ProtectedRoute element={<FormPage />} user={user} />} />
           <Route path="/admin/adminDashboard" element={<AdminDashboard/>} />

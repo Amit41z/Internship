@@ -14,7 +14,7 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(cors());
 
-mongoose.connect('mongodb://localhost:27017/SMGPS')
+mongoose.connect('mongodb://0.0.0.0:27017/SMGPS')
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
@@ -119,7 +119,7 @@ app.get('/user/formdata',userMiddleware,async(req,res)=>{
   const personalNumber = req.user.personalNumber;
 
   try{
-const formdata = await FormData({personalNumber:personalNumber});
+const formdata = await FormData.findOne({personalNumber:personalNumber});
 if(formdata){
   return res.status(200).json({formdata});
 }else{

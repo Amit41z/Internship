@@ -115,6 +115,7 @@ const LoginPage = ({ onLogin }) => {
                 });
 
                 const data = await response.json();
+                
                 if (response.ok) {
                     if (isSignup) {
                         alert('Signup successful! Please log in.');

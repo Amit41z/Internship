@@ -1,10 +1,44 @@
 // src/Body.js
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import tataSteelBackground from './assets/tataSteelBackground.jpg'; // Adjust the path as needed
 
-const Body = ({ isAuthenticated }) => {
+const Body = () => {
+    const [status,setStatus] = useState('Unknown');
+    const [isAuthenticated,setIsAuthenticated] = useState();
+    const navigate = useNavigate();
+
+useEffect(()=>{
+async function fetchdata(){
+const token = localStorage.getItem('Authorization');
+
+if(token){
+    setIsAuthenticated(true);
+    const data = await fetch('http://localhost:5000/user/formdata',{
+        method:"GET",
+        headers:{
+            "Content-Type":"applicaton/json",
+            "authorization":`${token}`
+        }
+    });
+    const result = await data.json();
+    console.log(result.formdata.status);
+    setStatus(result.formdata.status);
+}else{
+    setIsAuthenticated(false);
+    navigate('/login')
+}
+}
+
+fetchdata();
+},[])
+
+function logoutHandler(){
+    localStorage.removeItem('Authorization');
+    navigate('/login')
+}
+
     return (
         <div style={styles.container}>
             <div style={styles.topContainer}>
@@ -38,8 +72,8 @@ const Body = ({ isAuthenticated }) => {
                 </div>
             </div>
             <div style={styles.bottomFlexContainer}>
-                <div style={styles.flexBox}>FlexBox1</div>
-                <div style={styles.flexBox}>FlexBox2</div>
+                <div style={styles.flexBox}><button onClick={logoutHandler}>Logout</button></div>
+                <div style={styles.flexBox}>{status?status:"unknown"}</div>
                 <div style={styles.flexBox}>
                     <div style={styles.flex3}>
                         <h3>Material Transfer Form</h3>
@@ -158,7 +192,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: '10px',
-        color: '#000',
+        color: "#000",
     },
     button: {
         padding: '10px 20px',
